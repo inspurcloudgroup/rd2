@@ -32,9 +32,9 @@
 				Magic(std::initializer_list<int> list) {}  //定义构造函数
 			};
 
-			Magic magic = {1,2,3,4,5};					   //初始化构造函数
+			Magic magic = {1,2,3,4,5};				    //初始化构造函数
 			std::vector<int> v = {1, 2, 3, 4};			   //vector能容纳绝大多数类型的对象作为其元素，
-															但因为引用不是对象，所以不存在包含引用的vector。
+										     但因为引用不是对象，所以不存在包含引用的vector。
 				
 		初始化列表除了用在对象构造上，还能将其作为普通函数的形参，例如：
 			void func(std::initializer_list<int> list) {
@@ -84,7 +84,7 @@
 					typedef 原名称 新名称;
 				C++11 使用 using 引入了下面这种形式的写法，并且同时支持对传统 typedef 相同的功效：
 				typedef int (*process)(void *);  		// 定义了一个返回类型为 int，参数为 void* 的函数指针类
-														   型，名字叫做 process
+										   型，名字叫做 process
 				using process = int(*)(void *); 		// 同上, 更加直观
 
 				template <typename T>
@@ -106,7 +106,7 @@
 			
 			
 ##今日心得
-		回顾了组天没弄明白的列表初始化，现在搞明白了，之后学习了模板的使用，发现有很多新的语法，需要慢慢学习。
+	回顾了组天没弄明白的列表初始化，现在搞明白了，之后学习了模板的使用，发现有很多新的语法，需要慢慢学习。
 		
 
 ###明日计划
