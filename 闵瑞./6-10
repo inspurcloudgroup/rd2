@@ -1,0 +1,178 @@
+#c++学习
+	#指针
+		#指针和数组的联系
+			指针和数组在很多情况下是可以相互转化的，例如，一个指向数组开头的指针，可以通过使用指针的
+			算术运算或者数组索引来访问数组。
+			例如：
+				#include <iostream>
+					using namespace std;
+					const int MAX=3;
+					
+					int main(){
+						int var[MAX] = {10,20,30};
+						int *ptr;
+						
+						//指针中的数组地址
+						ptr = var;
+						for(int i = 0; i < MAX; i++){
+						//var对应值的地址
+						cout << "Address of var[" << i << "] = ";
+						cout << ptr << endl;
+						//var对应的值
+						cout << "Value of var[" << i << "] = ";
+						cout << *ptr << endl;
+						
+						//移动到下一个索引
+						ptr++;
+						}
+						
+					return 0;
+					}
+				上面的程序执行结果是：
+					Address of var[0] = 0xbfa088b0;
+					Vaule of var[0] = 10;
+					Address of var[1] = 0xbfa088b4;
+					Vaule of var[1] = 20;
+					Address of var[2] = 0xbfa088b8;
+					Vaule of var[2] = 30;
+					
+			但是，指针和数组并不是完全互换的，
+			例如：
+				#include <iostream>
+					using namespace std;
+					const int MAX = 3;
+					
+					int main(){
+						int var[MAX] = {10,20,30};
+						
+						for(int i = 0; i < MAX; i++){
+							//把i的地址传递给var
+							*var = i;//合法
+							
+							//由于var是数组，对饮的值是一个常数，不能对他进行自加
+							var++;//非法
+						
+						}
+					
+					return 0;
+					}
+			
+		##指针数组
+			语法：
+				类型  指针名字[数值];
+				例如：
+					int *p[3];
+			指针数组在c++中是被允许的，而且可以得到正确的值，
+			例如：
+				#include <iostream>
+ 
+					using namespace std;
+					const int MAX = 3;
+					 
+					int main ()
+					{
+					   int  var[MAX] = {10, 100, 200};
+					   int *ptr[MAX];
+					 
+					   for (int i = 0; i < MAX; i++)
+					   {
+						  // 赋值为整数的地址
+						  ptr[i] = &var[i]; 
+						  
+					   }
+					   for (int i = 0; i < MAX; i++)
+					   {
+						  cout << "Value of var[" << i << "] = ";
+						  cout << *ptr[i] << endl;
+					   }
+					   return 0;
+					}
+					上述代码的结果为：
+						Value of var[0] = 10
+						Value of var[1] = 100
+						Value of var[2] = 200
+					上面程序中通过创建指针*ptr，然后把var数组里的值的地址逐个赋值给指针ptr，
+					然后在把指针地址所对应的数值进行输出。
+			同样，对于字符串列表也可以通过指针的方式进行存储，
+			例如：
+				#include <iostream>
+ 
+					using namespace std;
+					const int MAX = 4;
+					 
+					int main ()
+					{
+					 const char *names[MAX] = {
+									   "Zara Ali",
+									   "Hina Ali",
+									   "Nuha Ali",
+									   "Sara Ali",
+					   };
+					 
+					   for (int i = 0; i < MAX; i++)
+					   {
+						  cout << "Value of names[" << i << "] = ";
+						  cout << names[i] << endl;
+					   }
+					   return 0;
+					}
+				上述结果为：
+					Value of names[0] = Zara Ali
+					Value of names[1] = Hina Ali
+					Value of names[2] = Nuha Ali
+					Value of names[3] = Sara Ali
+				跟整型的那个例子一样，都会输出正确的值。
+			
+			###指向指针的指针
+				通常来说，一个指针包含的是一个变量的地址，当一个指针指向另一个指针的时候，
+				第一个指针就会指向第二个指针指向的地址，而第二个指针则又指向包含实际值的
+				位置，如图：
+					指针1（地址1）  --->  实际值1
+					指针2（地址2） --->  实际值2
+					当指针1指向指针2时，
+					指针1 ---> 地址2（指针2） --->  实际值2
+					
+				当一个目标值被一个指针间接指向到另一个指针时，访问这个值需要使用两个星号运
+				算符，如下面实例所示：
+					#include <iostream>
+ 
+						using namespace std;
+						 
+						int main ()
+						{
+							int  var;
+							int  *ptr;
+							int  **pptr;
+						 
+							var = 3000;
+						 
+							// 获取 var 的地址
+							ptr = &var;
+						 
+							// 使用运算符 & 获取 ptr 的地址
+							pptr = &ptr;
+						 
+							// 使用 pptr 获取值
+							cout << "var 值为 :" << var << endl;
+							cout << "*ptr 值为:" << *ptr << endl;
+							cout << "**pptr 值为:" << **pptr << endl;
+						 
+							return 0;
+						}
+					当上面的代码被编译和执行时，它会产生下列结果：
+						var 值为 :3000
+						*ptr 值为:3000
+						**pptr 值为:3000
+					
+
+##今日心得
+	指针接触不多，还需要慢慢琢磨
+	
+	
+###明日计划
+	c++继续深入
+					
+					
+					
+					
+					
