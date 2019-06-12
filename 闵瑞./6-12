@@ -1,0 +1,156 @@
+#Git学习
+	#Git初始化
+		步骤 ： 设置名字和email，这些事在提交commit时的签名，
+				每次提交记录都会包含这些信息。使用git config
+				命令进行配置，如下：
+					lilux：
+					git config --global user.name "MR"  ---执行
+					git config --global user.email "2324582555@qq.com" ---执行
+					cat ~/.gitconfig ---执行
+					返回结果为：
+						[user]
+								name = MR
+								email = 2324582555@qq.com
+					windows：
+					git config --global user.name "MR"  ---执行
+					git config --global user.email "2324582555@qq.com" ---执行
+					git config --list ---执行
+					返回结果：
+						core.symlinks=false
+						core.autocrlf=true
+						core.fscache=true
+						color.diff=auto
+						color.status=auto
+						color.branch=auto
+						color.interactive=true
+						help.format=html
+						rebase.autosquash=true
+						http.sslcainfo=E:/Git/mingw64/ssl/certs/ca-bundle.crt
+						http.sslbackend=openssl
+						diff.astextplain.textconv=astextplain
+						filter.lfs.clean=git-lfs clean -- %f
+						filter.lfs.smudge=git-lfs smudge -- %f
+						filter.lfs.process=git-lfs filter-process
+						filter.lfs.required=true
+						credential.helper=manager
+						filter.lfs.clean=git-lfs clean -- %f
+						filter.lfs.smudge=git-lfs smudge -- %f
+						filter.lfs.process=git-lfs filter-process
+						filter.lfs.required=true
+						user.name=MR
+						user.email=2324582555@qq.com
+						
+					上面的配置文件就是 Git 全局配置的文件，一般配置方法是
+				git config --global <配置名称> <配置的值>。（linux和
+				windows都一样）
+					如果你想使项目里的某个值与前面的全局设置有区别（例如把
+				私人邮箱地址改为工作邮箱），你可以在项目中使用 git config
+				命令不带 --global 选项来设置. 这会在你当前的项目目录下创建
+				.git/config，从而使用针对当前项目的配置。		
+				
+	##克隆一个仓库
+		为了得到一个项目的拷贝文件，我们需要知道这个项目仓库的地址（Git url）。
+		Git能在许多协议下使用，所以Git url 可以以ssh:// ,http(s):// ,git:// 开
+		头。有些仓库可以通过多种协议来访问。
+		具体克隆仓库实例：
+		linux：
+			cd /home/shiyanlou/  ----执行
+			git clone https://github.com/shiyanlou/gitproject  ----执行
+			
+			结果：
+				Cloning into 'gitproject'...
+				remote: Enumerating objects: 3, done.
+				remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 3
+				Unpacking objects: 100% (3/3), done.
+				Check connectivity... done.
+			
+			cd gitproject/  ----执行
+			ls  ----执行
+			结果：
+				README.md
+			
+		windows：
+			cd /home/shiyanlou/  ----执行
+			git clone https://github.com/shiyanlou/gitproject  ----执行
+			
+			结果：
+				Cloning into 'gitproject'...
+				remote: Enumerating objects: 3, done.
+				remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 3
+				Unpacking objects: 100% (3/3), done.
+
+			cd gitproject/  ----执行
+			dir  ----执行
+			结果：
+				2019/06/12  15:40    <DIR>          .
+				2019/06/12  15:40    <DIR>          ..
+				2019/06/12  15:40                24 README.md
+							   1 个文件             24 字节
+							   2 个目录 27,671,425,024 可用字节
+			
+	###初始化一个新的仓库
+		可以对一个已存在的文件夹用下面的命令让它置于 Git 的版本控制管理之下。
+		具体步骤如下：
+			linux：	
+				cd /home/shiyanlou/  ----执行。切换目录
+				mkdir project  ----执行。创建一个project文件夹
+				cd project  ----执行。切换到project目录下
+				git init  ----执行。初始化仓库
+				结果为：
+					Initialized empty Git repository in /home/shiyanlou/project/.git/
+				
+				
+				ls -la  ----执行，查看目录里面文件的权限等详细信息
+				结果为：
+					total 12
+					drwxrwxr-x 3 shiyanlou shiyanlou 4096 Jun 12 **** .
+					drwxr-xr-x 14 shiyanlou shiyanlou 4096 Jun 12 **** ..
+					drwxrwxr-x 7 shiyanlou shiyanlou 4096 Jun 12 **** .git
+			windows:
+				cd /home/shiyanlou/  ----执行。切换目录
+				mkdir project  ----执行。创建一个project文件夹
+				cd project  ----执行。切换到project目录下
+				git init  ----执行。初始化仓库
+				结果为：
+					Initialized empty Git repository in /home/shiyanlou/project/.git/
+				
+				Cacls *.*  ----执行，获得目录中文件的详细信息
+				结果为：
+					BUILTIN\Administrators:(OI)(CI)(IO)F
+                    NT AUTHORITY\SYSTEM:F
+                    NT AUTHORITY\SYSTEM:(OI)(CI)(IO)F
+                    NT AUTHORITY\Authenticated Users:C
+                    NT AUTHORITY\Authenticated Users:(OI)(CI)(IO)C
+                    BUILTIN\Users:R
+                    BUILTIN\Users:(OI)(CI)(IO)(特殊访问:)
+                                              GENERIC_READ
+                                              GENERIC_EXECUTE
+	
+	####正常的工作流程
+		Git的基本流程：
+			1.创建或者修改文件
+			2.使用git add 命令添加新创建的或修改的文件到本地缓存区
+			3.使用git commit 命令提交到本地代码库
+			4.（可选，有的时候没有可以同步的远端代码库）使用git push命令将本地代码库同步到远端代码库
+		
+		
+##今日心得
+	刚开始接触git，感觉很多东西都需要更多的运用，才能发挥作用。
+	
+	
+###明日计划
+	学习git
+	学习c++
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+						
+				
