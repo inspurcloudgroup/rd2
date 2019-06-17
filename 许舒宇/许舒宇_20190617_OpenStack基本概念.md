@@ -37,14 +37,16 @@ KVM有一个内核模块叫 kvm.ko，只用于管理虚拟 CPU 和内存。  那
 
 说白了，作为一个 Hypervisor，KVM 本身只关注虚拟机调度和内存管理这两个方面。IO 外设的任务交给 Linux 内核和 Qemu。   
 
-    QEMU是一个主机上的VMM（virtual machine monitor）,通过动态二进制转换来模拟CPU，并提供一系列的硬件模型，使guest os认为自己和硬件直接打交道，其实是同QEMU模拟出来的硬件打交道，QEMU再将这些指令翻译给真正硬件进行操作。通过这种模式，guest os可以和主机上的硬盘，网卡，CPU，CD-ROM，音频设备和USB设备进行交互。但由于所有指令都需要经过QEMU来翻译，因而性能会比较差：
+<ul>QEMU是一个主机上的VMM（virtual machine monitor）,通过动态二进制转换来模拟CPU，并提供一系列的硬件模型，使guest os认为自己和硬件直接打交道，其实是同QEMU模拟出来的硬件打交道，QEMU再将这些指令翻译给真正硬件进行操作。通过这种模式，guest os可以和主机上的硬盘，网卡，CPU，CD-ROM，音频设备和USB设备进行交互。但由于所有指令都需要经过QEMU来翻译，因而性能会比较差：  </ul>
+
 ## Libvirt
 
 网上看 KVM 相关文章的时候肯定经常会看到 Libvirt 这个东西。
 Libvirt 是啥,
 简单说就是 KVM 的管理工具。  
 
-    从字面上看，由lib和virt两部分组成。lib是指库library的缩写，virt是虚拟化virtualization的缩写，所以他的定位是“虚拟化的库”。它是一套开源的API、管理工具，用来管理虚拟化平台。可以应用在KVM、XEN、VMware ESX、QEMU等虚拟化技术，在OpenStack Nova中，默认采用libvirt对不同类型的虚拟机(OpenStack默认KVM)进行管理。
+<ul>注：从字面上看，由lib和virt两部分组成。lib是指库library的缩写，virt是虚拟化virtualization的缩写，所以他的定位是“虚拟化的库”。它是一套开源的API、管理工具，用来管理虚拟化平台。可以应用在KVM、XEN、VMware ESX、QEMU等虚拟化技术，在OpenStack Nova中，默认采用libvirt对不同类型的虚拟机(OpenStack默认KVM)进行管理。</ul>
+
 其实，Libvirt 除了能管理 KVM 这种 Hypervisor，还能管理 Xen，VirtualBox 等。 
 OpenStack 底层也使用 Libvirt，所以很有必要学习一下。   
 Libvirt 包含 3 个东西：后台 daemon 程序 libvirtd、API 库和命令行工具 virsh 
