@@ -1,0 +1,81 @@
+#c++学习
+	#面向对象增强
+		#委托构造
+			C++11 引入了委托构造的概念，这使得构造函数可以在同一个类中一个构造函数
+			调用另一个构造函数，从而达到简化代码的目的，
+			具体实例如下：
+			inlude<iostream>
+				using namespace std;
+				
+				class Base{
+					public:
+						int value1;
+						int value2;
+						
+						//构造函数
+						Base(){ 
+							value1 = 1;
+						}
+						
+						//委托Base()构造函数
+						Base(int value) : Base {
+							value2 = 2;
+						
+						}
+						
+				};//注意这里有一个结束的分号';'
+				
+				int main(){
+					Base b(2);//直接初始化
+					std::cout << b.value1 << std::endl;
+					std::cout << b.value2 << std::endl;
+				
+				}
+				返回结果为：
+					1   2
+		
+		##继承构造
+				在传统的c++中，构造函数如果需要继承是需要将参数进行一一传递的，这
+			将导致效率低下。在c++11中，利using引入了继承构造函数的概念。
+			具体实例：
+				class Base{
+					//public表示公有区段
+					public: 
+						int value1;
+						int value2;
+						
+						Base(){
+							value1 = 1;
+						
+						}
+						
+						Base(int value) : Base(){
+							value2 = 2;
+						
+						}
+				
+				};
+				class Subclss : public Bse{
+					public:
+						//继承构造
+						using Base::Base;
+				
+				};
+				int main(){
+					Subcalss s(3);
+					std::cout << s.value1 << std::ednl;
+					std::cout << s.value2 << std::endl;
+				
+				}
+	
+	
+##今日心得
+	c++的学习还需要不断巩固基础知识，才能更好地进行实验楼的学习。
+	
+
+###明日计划
+	继续学习c++
+				
+				
+				
+				
