@@ -1,4 +1,4 @@
-# Spring Boot 事务控制 #
+# Spring Boot Web 支持#
 
 ## 实验步骤 ##
 这一节将学习使用 Spring Boot 开发 web 应用。本节需要同学们已经掌握了 Spring MVC 的知识。
