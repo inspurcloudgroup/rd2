@@ -1,0 +1,172 @@
+#git学习
+	#Git的基本流程：
+		1.创建或者修改文件
+		2.使用git add 命令添加新创建的或修改的文件到本地缓存区
+		3.使用git commit 命令提交到本地代码库
+		4.（可选，有的时候没有可以同步的远端代码库）使用git push命令将本地代码库同步到远端代码库
+		
+	##创建或者修改文件
+		进入之前建立的 project 目录，分别创建文件 file1，file2，file3：
+			linux：
+				cd /home/shiyanlou/project  ----执行。进入之前建立的仓库project目录
+				touch file1 file2 file3  ----执行。创建file1、file2、file3三个文件
+				echo "test" >> file1  ----执行。添加测试内容，也可用vim实现
+				echo "test" >> file2
+				echo "test" >> file3
+				git status  ----查看当前仓库的状态
+				结果：
+					On branch master
+
+					Initial commit
+
+					Untracked files:
+					   （use "git add <file>..."） to include in what will be committed）
+
+						   file1
+						   file2
+						   file3
+					nothing added to commit but untracked files present （use "git add" to track）
+					从结果可以发现，之前创建的file1、file2、file3三个文件正处于untracked状态，下
+					一步我们就需要使用git  add命令将他们添加到缓存区（index）。
+			windows：
+				cd project  ----执行。跳转目录
+				cd.>file1  ----执行。创建文件
+				cd.>file2
+				cd.>file3
+				echo "test" >> file1  ----执行。添加测试内容
+				echo "test" >> file2
+				echo "test" >> file3
+				git status  ----查看当前仓库的状态
+				执行结果为：
+					On branch master
+
+					No commits yet
+
+					Untracked files:
+					  (use "git add <file>..." to include in what will be committed)
+
+							file1
+							file2
+							file3
+
+					nothing added to commit but untracked files present (use "git add" to track)
+					跟linux执行的结果一样。
+			
+	###使用git add加入缓存区
+		使用 git add 命令将新建的文件添加到缓存区：
+			linux：
+				git add file1 file2 file3  ----执行。将三个文件加入到缓存区
+				git status  ----执行。查看仓库状态
+				结果为：
+					On branch master
+
+					Initial commit
+
+					Changes to be committed:
+						（use "git rm --cached <file>..." to unstage）
+
+						   new file: file1
+						   new file: file2
+						   new file: file3
+					可以看到三个文件已经发生了变化，此时已经为 commit 做好了准备，可以使用 git diff 命令
+					再加上 --cached 参数，看看缓存区中哪些文件被修改了。进入到 git diff --cached 界面后需
+					要输入 q 才可以退出。
+					如果没有--cached参数，git diff 会显示当前你所有已做的但没有加入到缓存区里的修改。
+					
+				git diff --cached ----执行。查看缓存区那些文件被修改
+				执行结果为：
+					diff --git a/file1 b/file1
+					new file mode 100644
+					index 0000000..e0499a7
+					--- /dev/null
+					+++ b/file1
+					@@ -0,0 +1,2 @@
+					+"test"
+					+"test"   ----<D6><B4><D0><D0><A1><A3><CC><ED><BC><D3><B2><E2><CA><D4><C4><DA><C8><DD><A3><AC><D2><B2><BF><C9><D3><C3>vim<CA><B5><CF><D6>
+					diff --git a/file2 b/file2
+					new file mode 100644
+					index 0000000..85c7d33
+					--- /dev/null
+					+++ b/file2
+					@@ -0,0 +1,2 @@
+					+"test"
+					+"test"
+					diff --git a/file3 b/file3
+					new file mode 100644
+					index 0000000..85c7d33
+					--- /dev/null
+					+++ b/file3
+					@@ -0,0 +1,2 @@
+					+"test"
+					+"test"
+				
+			windows	：
+				windows跟linux的操作完全相同，而且结果也是一样的。
+	
+	####使用git commit提交修改
+		当所有创建、修改的文件都被添加到缓存区，我们就需要使用git commit提交到本地仓库，
+		具体操作如下：
+			git commit -m "add 3 files" ---执行。提交文件
+			结果为：
+				[master (root-commit) 22a9031] add 3 files
+				 3 files changed, 6 insertions(+)
+				 create mode 100644 file1
+				 create mode 100644 file2
+				 create mode 100644 file3
+		提交的时候需要使用 -m 添加本次修改的注释，完成后就会记录一个新的项目版本。除了
+		用 git add 命令，我们还可以用下面的 -a 参数将所有没有加到缓存区的修改也一起提交，
+		但 -a 命令不会添加新建的文件。
+		具体如下：
+			git commit -a -m "add 3 files"  ---执行 -a 操作。
+			结果为：
+				On branch master
+				nothing to commit, working tree clean
+			再次使用git status命令，我们就能看到没有提交的文件了，缓存区已经被清空，
+			代码如下：
+				git status  ---- 执行。查看缓存区文件
+				执行结果为：
+					On branch master
+					nothing to commit, working tree clean
+					跟上面的git commit -a -m "add 3 files"提交命令一样，返回的结果都表示
+					已经没有未提交的文件。
+		**注意**：
+			1.如果是修改文件，也需要使用 git add 命令添加到缓存区才可以提交。
+			2.如果是删除文件，则直接使用 git rm 命令删除后会自动将已删除文件的信息添加到
+			缓存区，git commit 提交后就会将本地仓库中的对应文件删除。
+		
+		这时如果我们希望将本地仓库关联到远端服务器，我们可以使用 git remote 命令，不同于
+		刚刚的 git clone 命令，直接将远端的仓库克隆下来。
+		我们当前的仓库是使用 git init 初始化的本地仓库，所以我们需要将本地仓库与远程仓库
+		关联，使用如下命令（需要修改下面的远程仓库地址为自己的仓库地址），
+		例如：
+			git remote add origin https://github.com/kinglion580/shiyanlou.git
+			对于上述命令而言，git remote add 命令用于添加远程主机，origin 是主机名，此处
+			我们可以自定义，不一定非要使用 origin，而 https://github.com/kinglion580/shiyanlou.git，
+			是我自己的远程仓库，此处 需要替换为自己的远程仓库地址
+		**这个时候如果本地的仓库连接到了远程Git服务器，可以使用下面的命令将本地仓库同步到远端服务器，
+		如下：
+			git push origin master
+			
+##今日心得
+	git感觉是一个很有用的程序或者说是软件，就相当于自己能够免费的将自己的东西存放在网上，在学习这块
+	内容里，主要讲的就是如何去添加修改文件，然后进行上传，之前不懂怎么弄，现在看了发现其实也不是很难，
+	不过还要加强实践，不然也不知道具体操作那会出问题。
+	
+###明日计划
+	继续学习git
+	c++学习
+			
+			
+			
+			
+			
+			
+			
+			
+
+				
+			
+				
+				
+				
+				
