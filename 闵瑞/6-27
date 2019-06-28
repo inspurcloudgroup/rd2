@@ -1,0 +1,91 @@
+#c++学习
+	#泛型Lambda（c++14）
+			前面有提到说auto不能用在参数表里，这还是因为这样的写法会与模板的功能产生
+		冲突。但是Lambda表达式并不是普通函数，所以Lambda表达式不能够模板化。这就为我
+		们造成了一定程度上的麻烦--->参数表不能泛华，必须明确说明参数表的类型。
+			上述问题只存在于c++11中，从c++14开始，Lambda函数的形式参数可以使用auto关
+		键字来意义上的泛型。
+			具体如下：
+				void lern_lambda_func_4(){
+					auto generic = [](auto x,auto y){
+						return x+y;
+					
+					};
+					std::cout << "genric(1,2) =" << genric(1,2) <<std::endl;
+					std::cout << "genric(1.1,2.2) =" << genric(1.1,2.2) <<std::endl;
+					
+				}
+	
+	
+	##函数对象包装器
+		#std::function
+				Lambda表达式的本质是一个函数对象，当Lambda表达式的捕获列表为空时，Lambda
+			表达式还能够作为一个函数指针进行传递。
+				例如：
+					#include <iostream>
+					
+						//定义函数指针，这里涉及using的用法
+						using foo = void(int);
+						void functional(foo f) {
+							f(1);
+						}
+
+						int main() {
+							auto f = [](int value) {
+								std::cout << value << std::endl;
+							};
+							functional(f);  // 函数指针调用
+							f(1);           // lambda 表达式调用
+							return 0;
+						}
+						上面的代码给出了两种不同的调用形式，一种是将 Lambda 作为函数指针传递进
+					行调用，而另一种则是直接调用 Lambda 表达式，在 C++11 中，统一了这些概念
+					，将能够被调用的对象的类型，统一称之为可调用类型。而这种类型，便是通过 
+					std::function 引入的。
+				C++11 std::function 是一种通用、多态的函数封装，它的实例可以对任何可以调用的目
+			标实体进行存储、复制和调用操作，它也是对 C++中现有的可调用实体的一种类型安全的包裹
+			（相对来说，函数指针的调用不是类型安全的），换句话说，就是函数的容器。当我们有了函
+			数的容器之后便能够更加方便的将函数、函数指针作为对象进行处理。
+					例如：			
+						#include <functional>
+						#include <iostream>
+
+						int foo(int para) {
+							return para;
+						}
+
+						int main() {
+							// std::function 包装了一个返回值为 int, 参数为 int 的函数
+							std::function<int(int)> func = foo;
+
+							int important = 10;
+							std::function<int(int)> func2 = [&](int value) -> int {
+								return 1+value+important;
+							};
+							std::cout << func(10) << std::endl;
+							std::cout << func2(10) << std::endl;
+						}
+
+
+##学习心得
+		边学习边找资料，比刚开始轻松多了，但是还是会花费很多时间，而且资源比较多也比较杂，
+		需要自己去筛选和学习。
+		
+		
+###明日计划
+			学习c++
+			
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
