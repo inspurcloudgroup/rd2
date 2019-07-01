@@ -1,0 +1,153 @@
+#git基本用法下学习
+	##比较内容（比较提交，分支）
+		#比较提交 - git diff
+			开始之前，需要克隆一个库来做实验：
+				git clone https://github.com/shiyanlou/gitproject 
+			克隆完之后，我们需要对项目做一些修改：
+				cd gitproject	//切换到gitproject目录
+				echo "new file" >> README.md	//如果没有REAMD.md文件，则生成
+												该文件，然后将"new file"写入
+												README.md中。如果有则直接写入。
+				echo "new file" >> file1	//跟上一条命令一样
+			执行完上面的，可以使用 git status 命令查看修改的状态：
+				git status ---执行
+				结果为：
+					On branch master
+					Your branch is up-to-date with 'origin/master'
+					Changes not staged for commit:
+						(use "git add <file>..." to update what will be commited)
+						(use "git checkout -- <file>..." to discard changes inworking directory)
+						modified:	REANDME.md
+					Unstracked files:
+						(use "git add -- <file>..." to include in what will be commited)
+						file1
+					no changes added to commit (use "git add" add/or "git commit -a")
+			可以看到README.md被修改了，file1文件被添加了。如何查看修改的文件内容呢，那就需要使用
+			git diff 命令。git diff 命令的作用是比较修改的或提交的文件内容。
+			具体操作及结果如下：
+				git diff ---执行
+				结果为：
+					diff --git a/README.md b/README.md
+					index 21781dd.410e719 100644
+					--- a/README.md
+					+++ b/README.md
+					@@-1,2,+1,3@@
+					 gitproject
+					 ==========
+					 +new line
+					 (END)
+					 上面的结果需要按q来退出。命令输出当前工作目录中修改的内容，并不包含新加文件，
+					 请注意这些内容还没有添加到本地缓存区。
+			接下来就将文件进行添加：
+				git add * ---添加所有文件到缓存区
+				git diff ---这里会发现什么内容都没有，说明当前目录所有的修改都已经添加到缓存区了
+			如果需要看到与上次提交的差别，需要给 git diff 添加参数 --cached：
+				git diff --cached：
+				返回结果为：
+					diff --git a/README.md b/README.md
+					index 21781dd..410e719 100644
+					--- a/README.md
+					+++ b/README.md
+					@@ -1，2 +1，3 @@
+					 gitproject
+					 ==========
+					+new line
+					diff --git a/file1 b/file1
+					new file mode 100644
+					index 0000000..fa49b07
+					--- /dev/null
+					+++ b/file1
+					@@ -0，0 +1 @@
+					+new file
+					可以看到输出中已经包含了新加文件的内容，因为 file1 已经添加到了缓存区。
+				最后进行代码的提交：
+					git commit -m 'update code'
+					返回结果为：
+					[master ad1257a] update code
+					2 files changed,2 insertions(+)
+					create mode 100644 file1
+					可以看到file1已经提交成功
+		
+		##比较分支
+			前面讲到可以用git diff 查看修改的文件，以及添加参数--cached来比较缓存内容与上
+			一次提交的内容的差异。
+			同时，git diff 也可以用来比较项目中任意两个分支的差异。
+			操作如下：
+				首先先创建一个分支test，并在该分支上提交一些修改：
+					git branch test ---创建分支test
+					git checkout test ---切换到test分支
+					echo "branch test" >> file1
+					echo "new file2" >> file2
+					git add * ---添加缓存区
+					git commit -m 'update test branch' ---提交
+					返回结果：	
+						[test 47365ab] update test branch 
+						2 files changed ,2 insertions(+)
+						create mode 100644 file2
+				然后，查看test分支 和 master之间的差异：
+					git diff master test ---查看差异
+					返回结果为：
+						diff --git a/file1 b/file1
+						index fa49b07..17059cd 100644
+						--- a/file1
+						+++ b/file1
+						@@ -1 +1，2 @@
+						 new file
+						+branch test
+						diff --git a/file2 b/file2
+						new file mode 100644
+						index 0000000..80e7991
+						--- /dev/null
+						+++ b/file2
+						@@ -0，0 +1 @@
+						+new file2
+		
+		###更多的比较选项
+			如果你要查看当前的工作目录与另外一个分支的差别，你可以用下面的命令执行:
+			首先先切回master：
+				git checkout master
+			查看与之前创建的test之间的差异：
+				git diff test 或者 git diff test master
+				返回结果为：
+					diff --git a/file1 b/file1
+					index 17059cd..fa49b07 100644
+					--- a/file1
+					+++ b/file1
+					@@ -1，2 +1 @@
+					 new file
+					-branch test
+					diff --git a/file2 b/file2
+					deleted file mode 100644
+					index 80e7991..0000000
+					--- a/file2
+					+++ /dev/null
+					@@ -1 +0，0 @@
+					跟之前在test枝干上与master比较的结果是一样的。
+			同时，也可以加上路径限定符，来指标较某一个文件或者目录，
+			具体代码如下：
+				git diff test file1
+				返回结果为：
+					diff --git a/file1 b/file1
+					index 17059cd..fa49b07 100644
+					--- a/file1
+					+++ b/file1
+					@@ -1，2 +1 @@
+					 new file
+					-branch test
+					上面这条命令会显示你当前工作目录下的 file1 与 test 分支之间的差别。
+			
+			--stat 参数可以统计一下有哪些文件被改动，有多少行被改动：
+				git diff test --stat
+				返回结果为：
+					 file1 | 1 -
+					 file2 | 1 -
+					 2 files changed， 2 deletions（-）
+				
+		
+##今日心得
+  git的学习需要不断地去练习，操作过程中有很多步骤，而且每一步都是紧密相连，需要练习才能更好地掌握。
+  
+  
+###明日计划
+  git学习
+  了解分布式存储
